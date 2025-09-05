@@ -16,6 +16,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  savedBooks: [
+    {
+      googleId: { type: String, index: true },
+      title: String,
+      authors: [String],
+      thumbnail: String,
+      previewLink: String,
+      infoLink: String,
+      savedAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 // Hash password before saving

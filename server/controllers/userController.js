@@ -94,3 +94,41 @@ const Login = asyncHandler(async (req, res) => {
 });
 
 module.exports = { Register, Login,Logout, Profile };
+// Saved books handlers
+const asyncHandler2 = asyncHandler; // alias for clarity
+
+const SaveBook = asyncHandler2(async (req, res) => {
+  const userId = req.user.userId;
+  const { googleId, title, authors, thumbnail, previewLink, infoLink } = req.body;
+  if (!googleId) return res.status(400).json({ success: false, message: 'googleId required' });
+  const user = await User.findById(userId);
+  if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+  const exists = (user.savedBooks || []).some((b) => b.googleId === googleId);
+  if (!exists) {
+    user.savedBooks = user.savedBooks || [];
+    user.savedBooks.push({ googleId, title, authors, thumbnail, previewLink, infoLink });
+    await user.save();
+  }
+  res.json({ success: true, savedBooks: user.savedBooks });
+});
+
+const ListSavedBooks = asyncHandler2(async (req, res) => {
+  const userId = req.user.userId;
+  const user = await User.findById(userId);
+  if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+  res.json({ success: true, savedBooks: user.savedBooks || [] });
+});
+
+const RemoveSavedBook = asyncHandler2(async (req, res) => {
+  const userId = req.user.userId;
+  const { googleId } = req.params;
+  const user = await User.findById(userId);
+  if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+  user.savedBooks = (user.savedBooks || []).filter((b) => b.googleId !== googleId);
+  await user.save();
+  res.json({ success: true, savedBooks: user.savedBooks });
+});
+
+module.exports.SaveBook = SaveBook;
+module.exports.ListSavedBooks = ListSavedBooks;
+module.exports.RemoveSavedBook = RemoveSavedBook;

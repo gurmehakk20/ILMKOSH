@@ -23,8 +23,7 @@ function Login() {
         console.log('Login successful:', response.data); // Debugging
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', (response.data.user));
-        navigate('/new');
-        window.location.reload(); 
+        navigate('/new', { replace: true });
    
          // Redirect after successful login
       } else {
