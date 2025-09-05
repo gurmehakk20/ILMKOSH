@@ -34,7 +34,7 @@ const UploadBook = () => {
     formData.append("description", description);
 
     try {
-      const apiUrl = "http://localhost:5000/books/upload";
+      const apiUrl = `${import.meta.env.VITE_API_URL}/books/upload`;
       const response = await axios.post(apiUrl, formData, config);
       setMessage(response.data.message);
     } catch (error) {

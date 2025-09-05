@@ -36,7 +36,7 @@ const UploadForm = () => {
     formData.append('description', description);
   
     try {
-      const apiUrl = 'http://localhost:5000/books/upload';
+      const apiUrl = `${import.meta.env.VITE_API_URL}/books/upload`;
       console.log(`Uploading to: ${apiUrl}`);
       console.log('FormData:', formData);
       const response = await axios.post(apiUrl, formData, config);

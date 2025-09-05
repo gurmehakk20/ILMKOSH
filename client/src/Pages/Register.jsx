@@ -21,7 +21,7 @@ const Register = () => {
   
     console.log('Sending data:', data); // Log data to ensure it’s correct
   
-    axios.post('http://localhost:5000/user/register', data)
+    axios.post(`${import.meta.env.VITE_API_URL}/user/register`, data)
       .then((response) => {
         setMessage('Registration successful!');
         console.log('Registration successful!');
